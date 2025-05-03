@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Enhanced Interactive Portfolio Contact Website</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0d0f14, #1a1c23);
+    color: #eee;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Page loader spinner */
+  #pageLoader {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background-color: #111;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+  }
+
+  #pageLoader .spinner {
+    border: 5px solid #222;
+    border-top: 5px solid #0a74da;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem 1rem 1.2rem;
+    background: transparent;
+    font-weight: 700;
+    font-size: 2.3rem;
+    letter-spacing: 2px;
+    color: #0a74da;
+    position: relative;
+    overflow: visible;
+  }
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #0a74da;
+    margin: 8px auto 0;
+    border-radius: 3px;
+    animation: underlineAnim 2s infinite alternate ease-in-out;
+  }
+  @keyframes underlineAnim {
+    from {width: 40px; opacity: 0.5;}
+    to {width: 70px; opacity: 1;}
+  }
+
+  .section {
+    position: relative;
+    min-height: 400px;
+    padding: 1.6rem;
+    border-bottom: 1px solid #2e303c;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
+    margin: 2rem auto;
+    max-width: 960px;
+    background: rgba(20, 23, 37, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 15px #0a74da44;
+  }
+
+  .section:nth-child(odd) {
+    animation-delay: 0.2s;
+  }
+  .section:nth-child(even) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section h2 {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 1.75rem;
+    color: #0a74da;
+    text-shadow: 0 0 20px #0a74daaa, 0 0 10px #0a74da99;
+    font-weight: 700;
+    z-index: 15;
+  }
+
+  .photo-container {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+    height: 320px;
+    perspective: 1200px;
+    margin: 0 auto;
+  }
+
+  .photo {
+    position: absolute;
+    width: 200px;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow:
+      0 8px 15px rgba(10, 116, 218, 0.4),
+      0 6px 10px rgba(10, 116, 218, 0.3);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.4s ease;
+    filter: drop-shadow(0 0 12px rgba(10, 116, 218, 0.25));
+  }
+  .photo:hover {
+    filter: drop-shadow(0 0 25px #0a74da);
+    transform: scale(1.05);
+    z-index: 100;
+  }
+
+  /* Contact Form styling */
+  #contact-form-section {
+    background: rgba(20, 23, 37, 0.85);
+    padding: 3rem 2rem 3rem;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #0a74dacc;
+    max-width: 520px;
+  }
+  #contact-form-section h2 {
+    position: static;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #0a74da;
+    text-shadow: 0 0 15px #0a74daaa;
+  }
+
+  form {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  form label {
+    font-weight: 700;
+    color: #c0d7ff;
+    letter-spacing: 0.03em;
+  }
+
+  form input {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    background: #1c212f;
+    color: #eee;
+    box-shadow: inset 0 0 6px #0a74da77;
+    transition: box-shadow 0.3s ease;
+  }
+  form input:focus {
+    box-shadow: inset 0 0 14px #0a74daee;
+  }
+
+  form button {
+    padding: 14px;
+    font-size: 1.3rem;
+    background: linear-gradient(45deg, #0a74da, #0061a8);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s ease;
+    box-shadow: 0 0 12px #0a74dacc;
+  }
+  form button:hover {
+    background: linear-gradient(45deg, #0061a8, #084a7a);
+    box-shadow: 0 0 20px #0a74daff;
+  }
+
+  #formMessage {
+    min-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  /* Contact info section */
+  footer {
+    background: transparent;
+    color: #b4c9ffcc;
+    padding: 1.8rem 1rem;
+    text-align: center;
+    font-size: 1.15rem;
+    border-top: 1px solid #0a74da66;
+    font-weight: 600;
+    text-shadow: 0 0 15px #0a74daaa;
+  }
+  footer a {
+    color: #70aaff;
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Modal Overlay for full photo zoom */
+  #photoModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 20, 38, 0.97);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    padding: 25px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #photoModal.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  #photoModal img {
+    max-width: 90vw;
+    max-height: 70vh;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px #0a74daaa;
+    margin-bottom: 0.9rem;
+    object-fit: contain;
+    user-select:none;
+  }
+
+  #photoModal .details {
+    color: #93adffcc;
+    font-size: 1.3rem;
+    max-width: 90vw;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 12px #0a74daaa;
+  }
+
+  #photoModal .close-button {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    font-size: 3rem;
+    color: #70aaffdd;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 900;
+    transition: color 0.2s ease;
+  }
+  #photoModal .close-button:hover {
+    color: #ff517e;
+  }
+
+  /* Back to top button */
+  #backToTopBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #0a74dadd;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #0a74dabb;
+    font-size: 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3500;
+    transition: background 0.3s ease;
+  }
+  #backToTopBtn:hover {
+    background: #084a7a;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 720px){
+    .photo-container {
+      width: 95%;
+      height: 280px;
+    }
+    .photo {
+      width: 140px;
+      height: 220px;
+    }
+    form {
+      gap: 12px;
+    }
+  }
+
+</style>
+</head>
+<body>
+  <div id="pageLoader"><div class="spinner"></div></div>
+
+<header>
+  Contact &amp; Portfolio Interactive Site
+</header>
+
+<!-- Sections 1 to 6 with photos and data-details attribute -->
+<div class="section" id="section1">
+  <h2>Nature Wonders</h2>
+  <div class="photo-container" data-move-dir="top-left">
+    <img src="https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Forest during sunrise with mist" class="photo" style="left:10%; top:0;" data-details="A serene forest bathed in early morning mist and sunlight." />
+    <img src="https://images.pexels.com/photos/34950/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Waterfall flowing between rocks" class="photo" style="left:35%; top:10%;" data-details="A majestic waterfall flowing between lush green rocks." />
+    <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Green hills under cloudy sky" class="photo" style="left:60%; top:5%;" data-details="Rolling green hills stretching beneath a dynamic cloudy sky." />
+  </div>
+</div>
+
+<div class="section" id="section2">
+  <h2>City Life</h2>
+  <div class="photo-container" data-move-dir="top-right">
+    <img src="https://images.pexels.com/photos/374870/pexels-photo-374870.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Cityscape during sunset" class="photo" style="left:15%; top:5%;" data-details="Vibrant city skyline glowing under sunset hues." />
+    <img src="https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Busy city streets with lights" class="photo" style="left:45%; top:0;" data-details="Busy urban streets illuminated with colorful lights at night." />
+    <img src="https://images.pexels.com/photos/314710/pexels-photo-314710.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Modern glass buildings" class="photo" style="left:70%; top:12%;" data-details="Reflection of clouds on sleek modern glass buildings." />
+  </div>
+</div>
+
+<div class="section" id="section3">
+  <h2>Abstract Art</h2>
+  <div class="photo-container" data-move-dir="bottom-left">
+    <img src="https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Colorful abstract painting" class="photo" style="left:12%; top:10%;" data-details="A dazzling abstract painting of vivid colors and shapes." />
+    <img src="https://images.pexels.com/photos/271937/pexels-photo-271937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Textured colorful art" class="photo" style="left:42%; top:0;" data-details="Close-up of textured colorful abstract art." />
+    <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Bright modern art piece" class="photo" style="left:68%; top:15%;" data-details="Bright modern art piece with flowing lines and shapes." />
+  </div>
+</div>
+
+<div class="section" id="section4">
+  <h2>Mountain Views</h2>
+  <div class="photo-container" data-move-dir="bottom-right">
+    <img src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Snow capped mountain" class="photo" style="left:10%; top:5%;" data-details="Snow capped mountain towering majestically under blue sky." />
+    <img src="https://images.pexels.com/photos/358482/pexels-photo-358482.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Mountain trail and fog" class="photo" style="left:40%; top:12%;" data-details="A misty mountain trail surrounded by fog." />
+    <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Sunrise over mountains" class="photo" style="left:72%; top:7%;" data-details="Colorful sunrise lighting up mountain peaks." />
+  </div>
+</div>
+
+<div class="section" id="section5">
+  <h2>Ocean Life</h2>
+  <div class="photo-container" data-move-dir="left">
+    <img src="https://thafd.bing.com/th/id/OIP.II893F4LKvC5oqFQeBb_rwHaEK?rs=1&pid=ImgDetMain" alt="Beach waves" class="photo" style="left:15%; top:5%;" data-details="Gentle waves lapping a sandy beach at sunset." />
+    <img src="https://images.pexels.com/photos/1669944/pexels-photo-1669944.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Underwater coral reef" class="photo" style="left:45%; top:12%;" data-details="Vibrant coral reef teeming with marine life." />
+    <img src="https://thafd.bing.com/th/id/OIP.YZ-gd_yBanpYe9eqV1SLZgHaEK?rs=1&pid=ImgDetMain" alt="Ocean horizon" class="photo" style="left:70%; top:0%;" data-details="Peaceful ocean horizon under a cloudy sky." />
+  </div>
+</div>
+
+<div class="section" id="section6">
+  <h2>Forest Trails</h2>
+  <div class="photo-container" data-move-dir="right">
+    <img src="https://thafd.bing.com/th/id/OIP.j0VgevSfHONAj-xuajVaAQHaEK?rs=1&pid=ImgDetMain" alt="Pathway through forest" class="photo" style="left:13%; top:10%;" data-details="Sunlit pathway winding through dense forest trees." />
+    <img src="https://c4.wallpaperflare.com/wallpaper/264/27/750/track-nature-forest-vegetation-wallpaper-preview.jpg" alt="Train tracks in forest" class="photo" style="left:44%; top:0;" data-details="Old train tracks leading through the forest." />
+    <img src="https://images.pexels.com/photos/355423/pexels-photo-355423.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Forest canopy" class="photo" style="left:70%; top:12%;" data-details="Sun filtering through tall forest canopy." />
+  </div>
+</div>
+
+<!-- Contact form section -->
+<div class="section" id="contact-form-section">
+  <h2>Contact Me</h2>
+  <form id="contactForm" novalidate>
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+    
+    <label for="phone">Contact Number</label>
+    <input type="tel" id="phone" name="phone" placeholder="Your phone number" required pattern="\+?[0-9\s()-]{7,20}"
+    autocomplete="tel" />
+    
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="Your email" required autocomplete="email" />
+    
+    <button type="submit">Submit</button>
+  </form>
+  <p id="formMessage" aria-live="polite" style="text-align:center; margin-top:1rem; color: #0f0;"></p>
+</div>
+
+<!-- Contact info footer -->
+<footer>
+  <p><strong>Contact Info:</strong></p>
+  <p>Name: AAYUSHI KEER</p>
+  <p>Phone: +91 8824398515</p>
+  <p>Email: <a href="mailto:aayushikeer65@gmail.com">aayushikeer65@gmail.com</a></p>
+</footer>
+
+<!-- Modal Overlay for photo zoom with details -->
+<div id="photoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" tabindex="-1">
+  <span class="close-button" title="Close modal" aria-label="Close Modal">&times;</span>
+  <img src="" alt="" id="modalTitle" />
+  <div class="details" id="modalDesc"></div>
+</div>
+
+<!-- Back to top button -->
+<button id="backToTopBtn" aria-label="Back to top">&#8679;</button> 
+<script>
+  // Page loader fade out on load
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('pageLoader');
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display = 'none', 500);
+  });
+
+  // Initialize EmailJS - Replace with your own user ID from emailjs.com
+  (function(){
+    emailjs.init('EK-BwMDd6aZyDUFQn');
+  })();
+
+  // Photo movement effects
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(section => {
+    const container = section.querySelector('.photo-container');
+    if(!container) return;
+
+    const moveDir = container.dataset.moveDir || 'top-left';
+
+    section.addEventListener('mousemove', e => {
+      const rect = container.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left - rect.width / 2;
+      const offsetY = e.clientY - rect.top - rect.height / 2;
+
+      const photos = container.querySelectorAll('.photo');
+      photos.forEach((photo, i) => {
+        let moveX = 0, moveY = 0;
+        const intensity = (i + 1) * 5;
+
+        switch(moveDir) {
+          case 'top-left':
+            moveX = -offsetX * intensity / 100;
+            moveY = -offsetY * intensity / 100;
+            break;
+          case 'top-right':
+            moveX = offsetX * intensity / 100;
+            moveY = -offsetY * intensity / 100;
+            break;
+          case 'bottom-left':
+            moveX = -offsetX * intensity / 100;
+            moveY = offsetY * intensity / 100;
+            break;
+          case 'bottom-right':
+            moveX = offsetX * intensity / 100;
+            moveY = offsetY * intensity / 100;
+            break;
+          case 'left':
+            moveX = -offsetX * intensity / 80;
+            moveY = 0;
+            break;
+          case 'right':
+            moveX = offsetX * intensity / 80;
+            moveY = 0;
+            break;
+        }
+
+        photo.style.transform = `translate(${moveX}px, ${moveY}px) scale(1)`;
+      });
+    });
+
+    section.addEventListener('mouseleave', () => {
+      const photos = container.querySelectorAll('.photo');
+      photos.forEach(photo => {
+        photo.style.transform = `translate(0,0) scale(1)`;
+      });
+    });
+  });
+
+  // Fullscreen photo zoom with details modal
+  const photoModal = document.getElementById('photoModal');
+  const modalImg = photoModal.querySelector('img');
+  const modalDetails = photoModal.querySelector('.details');
+  const closeBtn = photoModal.querySelector('.close-button');
+
+  const allPhotos = document.querySelectorAll('.photo');
+  allPhotos.forEach(photo => {
+    photo.addEventListener('click', e => {
+      e.stopPropagation();
+      modalImg.src = photo.src.replace(/&h=320/, '&h=1080'); // load bigger image if possible
+      modalImg.alt = photo.alt || '';
+      modalDetails.textContent = photo.dataset.details || photo.alt || '';
+      photoModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      photoModal.focus();
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  photoModal.addEventListener('click', e => {
+    if(e.target === photoModal) closeModal();
+  });
+
+  // Close modal with escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === "Escape" && photoModal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  function closeModal() {
+    photoModal.classList.remove('active');
+    modalImg.src = '';
+    modalDetails.textContent = '';
+    document.body.style.overflow = '';
+  }
+
+  // Contact form submission
+  const contactForm = document.getElementById('contactForm');
+  const formMessage = document.getElementById('formMessage');
+  let formTimeout;
+
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (!contactForm.checkValidity()) {
+      formMessage.style.color = "red";
+      formMessage.textContent = "Please fill out all fields correctly.";
+      clearTimeout(formTimeout);
+      formTimeout = setTimeout(() => formMessage.textContent = '', 4000);
+      return;
+    }
+
+    const formData = {
+      from_name: contactForm.name.value,
+      phone: contactForm.phone.value,
+      email_id: contactForm.email.value,
+    };
+
+    emailjs.sendform('service_f3ibswk', 'template_pu0ecfe', formdata) 
+      .then(function(response){
+        formMessage.style.color = "#0f0";
+        formMessage.textContent = "Thank you! Your details have been sent successfully.";
+        contactForm.reset();
+        clearTimeout(formTimeout);
+        formTimeout = setTimeout(() => formMessage.textContent = '', 5000);
+      }, (error) => {
+        formMessage.style.color = "red";
+        formMessage.textContent = "Oops! Something went wrong. Please try again.";
+        clearTimeout(formTimeout);
+        formTimeout = setTimeout(() => formMessage.textContent = '', 5000);
+        console.error('EmailJS error:', error);
+      });
+  });
+
+  // Back to top button logic
+  const backToTopBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', () => {
+    if(document.documentElement.scrollTop > 200){
+      backToTopBtn.style.display = 'flex';
+    } else {
+      backToTopBtn.style.display = 'none';
+    }
+  });
+
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+</script>
+<!-- EmailJS SDK include + initialize -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  // SDK load hone ke baad initialize karo
+  document.addEventListener("DOMContentLoaded", function () {
+    emailjs.init("YOUR_USER_ID"); // <-- Yahan apna EmailJS user ID daalo
+  });
+</script>
+</body>
+</html>
