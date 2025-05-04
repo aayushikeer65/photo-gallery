@@ -400,27 +400,6 @@
     outline: none;
   }
 
-  /* Video section styling */
-  #video-section {
-    min-height: 320px;
-    max-width: 1024px;
-    margin: 40px auto 40px auto;
-    padding: 0 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 14px;
-    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.15);
-  }
-  #video-section video {
-    width: 100%;
-    max-height: 320px;
-    object-fit: cover;
-    border-radius: 14px;
-    box-shadow: 0 8px 18px rgba(52,152,219,0.3);
-  }
-
   /* Responsive and mobile */
   @media (max-width: 768px) {
     section {
@@ -442,10 +421,6 @@
     }
     nav ul {
       width: 70vw;
-    }
-    #video-section {
-      max-height: 200px;
-      margin: 30px auto 30px auto;
     }
   }
   @media (max-width: 400px) {
@@ -486,10 +461,6 @@
   <h1>Welcome to My Professional Portfolio</h1>
   <p>Your trusted partner for creative, modern solutions.</p>
   <a href="#contact" class="btn-primary" aria-label="Contact Me">Contact Me</a>
-</section>
-
-<section id="video-section" aria-label="Looping video section">
-  <video src="https://player.vimeo.com/external/438284820.sd.mp4?s=0ff084f66555eeddde52ed13f0426732a7feb9a1&profile_id=165&oauth2_token_id=57447761" autoplay muted loop playsinline aria-hidden="true"></video>
 </section>
 
 <section id="about" tabindex="0" aria-label="About Section">
