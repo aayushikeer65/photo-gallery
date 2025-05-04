@@ -2,595 +2,758 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Professional Interactive Portfolio - Enhanced</title>
 <style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
+  /* Google Fonts Poppins */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+  /* Reset and base */
+  *, *::before, *::after {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
   }
-
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0d0f14, #1a1c23);
-    color: #eee;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0f7fb 0%, #ffffff 100%);
+    color: #2c3e50;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    position: relative;
+    min-height: 100vh;
   }
-
-  /* Page loader spinner */
-  #pageLoader {
+  a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover, a:focus {
+    color: #217dbb;
+    outline: none;
+  }
+  /* Particle background container */
+  #particle-bg {
     position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background-color: #111;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5000;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
   }
 
-  #pageLoader .spinner {
-    border: 5px solid #222;
-    border-top: 5px solid #0a74da;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg);}
-    100% {transform: rotate(360deg);}
-  }
-
+  /* Header and Navigation */
   header {
-    text-align: center;
-    padding: 2rem 1rem 1.2rem;
-    background: transparent;
-    font-weight: 700;
-    font-size: 2.3rem;
-    letter-spacing: 2px;
-    color: #0a74da;
-    position: relative;
-    overflow: visible;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255 255 255 / 0.9);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    backdrop-filter: saturate(180%) blur(14px);
+    z-index: 10000;
   }
-  header::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: #0a74da;
-    margin: 8px auto 0;
-    border-radius: 3px;
-    animation: underlineAnim 2s infinite alternate ease-in-out;
-  }
-  @keyframes underlineAnim {
-    from {width: 40px; opacity: 0.5;}
-    to {width: 70px; opacity: 1;}
-  }
-
-  .section {
-    position: relative;
-    min-height: 400px;
-    padding: 1.6rem;
-    border-bottom: 1px solid #2e303c;
+  nav {
+    max-width: 1024px;
+    margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s forwards;
-    margin: 2rem auto;
-    max-width: 960px;
-    background: rgba(20, 23, 37, 0.7);
-    border-radius: 15px;
-    box-shadow: 0 0 15px #0a74da44;
+    padding: 1rem 1.2rem;
+  }
+  nav .logo {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #3498db;
+    cursor: default;
+    user-select: none;
+    letter-spacing: 1.3px;
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+  nav ul li {
+    font-weight: 600;
+  }
+  nav ul li a {
+    font-size: 1rem;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  nav ul li a.active,
+  nav ul li a:hover {
+    border-color: #3498db;
+    color: #217dbb;
+  }
+  nav ul li a:focus-visible {
+    outline-offset: 4px;
+    outline: 3px solid #3498db;
+    border-color: transparent;
   }
 
-  .section:nth-child(odd) {
+  /* Hamburger menu for mobile */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+  }
+  .menu-toggle span {
+    height: 3px;
+    background: #3498db;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+  .menu-toggle.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  @media (max-width: 768px) {
+    nav ul {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      background: rgba(255 255 255 / 0.95);
+      height: calc(100vh - 60px);
+      width: 70vw;
+      max-width: 300px;
+      padding-top: 2rem;
+      flex-direction: column;
+      gap: 1.8rem;
+      border-left: 1px solid #ddd;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      box-shadow: -3px 0 20px rgba(0,0,0,0.05);
+      z-index: 20000;
+    }
+    nav ul.open {
+      transform: translateX(0);
+    }
+    .menu-toggle {
+      display: flex;
+    }
+  }
+
+  /* Sections general */
+  section {
+    min-height: 100vh;
+    padding: 130px 24px 80px 24px;
+    max-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+  }
+  section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    color: #3498db;
+    user-select: none;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1.1s forwards;
+  }
+  section p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 720px;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1.3s forwards;
+  }
+  section p:nth-of-type(2) {
     animation-delay: 0.2s;
   }
-  .section:nth-child(even) {
-    animation-delay: 0.4s;
-  }
 
-  @keyframes fadeInUp {
+  /* Fade up animation */
+  @keyframes fadeUp {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  .section h2 {
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    font-size: 1.75rem;
-    color: #0a74da;
-    text-shadow: 0 0 20px #0a74daaa, 0 0 10px #0a74da99;
-    font-weight: 700;
-    z-index: 15;
-  }
-
-  .photo-container {
-    position: relative;
-    width: 80%;
-    max-width: 900px;
-    height: 320px;
-    perspective: 1200px;
-    margin: 0 auto;
-  }
-
-  .photo {
-    position: absolute;
-    width: 200px;
-    height: 320px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow:
-      0 8px 15px rgba(10, 116, 218, 0.4),
-      0 6px 10px rgba(10, 116, 218, 0.3);
+  /* Buttons - Call To Action */
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.65rem 1.8rem;
+    border-radius: 30px;
+    box-shadow: 0 6px 14px rgba(52, 152, 219, 0.6);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
     cursor: pointer;
     user-select: none;
-    transition:
-      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      filter 0.4s ease;
-    filter: drop-shadow(0 0 12px rgba(10, 116, 218, 0.25));
   }
-  .photo:hover {
-    filter: drop-shadow(0 0 25px #0a74da);
-    transform: scale(1.05);
-    z-index: 100;
-  }
-
-  /* Contact Form styling */
-  #contact-form-section {
-    background: rgba(20, 23, 37, 0.85);
-    padding: 3rem 2rem 3rem;
-    border-radius: 15px;
-    box-shadow: 0 0 30px #0a74dacc;
-    max-width: 520px;
-  }
-  #contact-form-section h2 {
-    position: static;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #0a74da;
-    text-shadow: 0 0 15px #0a74daaa;
-  }
-
-  form {
-    max-width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  form label {
-    font-weight: 700;
-    color: #c0d7ff;
-    letter-spacing: 0.03em;
-  }
-
-  form input {
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: none;
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    box-shadow: 0 8px 18px rgba(52, 152, 219, 0.8);
     outline: none;
-    font-size: 1.1rem;
-    background: #1c212f;
-    color: #eee;
-    box-shadow: inset 0 0 6px #0a74da77;
-    transition: box-shadow 0.3s ease;
-  }
-  form input:focus {
-    box-shadow: inset 0 0 14px #0a74daee;
+    transform: scale(1.05);
   }
 
-  form button {
-    padding: 14px;
-    font-size: 1.3rem;
-    background: linear-gradient(45deg, #0a74da, #0061a8);
-    color: white;
-    border: none;
-    border-radius: 12px;
+  /* Services Section */
+  #services .service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 2rem;
+  }
+  .service-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem 2.5rem 1.5rem;
+    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.12);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: default;
+  }
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-12px);
+    box-shadow: 0 22px 50px rgba(52, 152, 219, 0.25);
+  }
+  .service-card h3 {
+    margin-bottom: 0.8rem;
+    color: #2c3e50;
+    font-weight: 700;
+    user-select: none;
+  }
+  .service-card p {
+    font-size: 1rem;
+    color: #556170;
+  }
+
+  /* Portfolio Section: sequential grid, no floating images */
+  #portfolio .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 1.6rem;
+  }
+  .portfolio-item {
+    border-radius: 18px;
+    overflow: hidden;
     cursor: pointer;
-    font-weight: 700;
+    box-shadow: 0 6px 22px rgba(52,152,219,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    outline-offset: 0;
+    position: relative;
+    background: #fff;
+  }
+  .portfolio-item img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+    border-radius: 18px;
+  }
+  .portfolio-item:hover img,
+  .portfolio-item:focus img {
+    transform: scale(1.07);
+  }
+
+  /* Testimonials Section */
+  #testimonials {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #testimonials .testimonial {
+    background: #ecf3f9;
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 10px 26px rgba(52,152,219,0.1);
+    user-select: none;
+    font-style: italic;
+    color: #34495e;
+    position: relative;
+    font-size: 1.1rem;
     transition: background 0.3s ease;
-    box-shadow: 0 0 12px #0a74dacc;
   }
-  form button:hover {
-    background: linear-gradient(45deg, #0061a8, #084a7a);
-    box-shadow: 0 0 20px #0a74daff;
+  #testimonials .testimonial:hover {
+    background: #d3e4fb;
   }
-
-  #formMessage {
-    min-height: 24px;
+  #testimonials .testimonial .author {
+    margin-top: 1.2rem;
+    font-style: normal;
     font-weight: 700;
-    letter-spacing: 0.02em;
+    color: #3498db;
+    font-size: 1.05rem;
   }
 
-  /* Contact info section */
-  footer {
-    background: transparent;
-    color: #b4c9ffcc;
-    padding: 1.8rem 1rem;
+  /* Contact Section */
+  #contact {
     text-align: center;
-    font-size: 1.15rem;
-    border-top: 1px solid #0a74da66;
-    font-weight: 600;
-    text-shadow: 0 0 15px #0a74daaa;
+    padding-bottom: 120px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  footer a {
-    color: #70aaff;
-    text-decoration: none;
+  #contact h2 {
+    margin-bottom: 1.3rem;
+    color: #2c3e50;
   }
-  footer a:hover {
+  #contact .info {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.9rem;
+    color: #34495e;
+    user-select: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  #contact .info span {
+    font-weight: 700;
+    color: #3498db;
+    min-width: 85px;
+    text-align: right;
+  }
+  #contact .info a {
+    color: #3498db;
+    font-weight: 500;
     text-decoration: underline;
   }
+  #contact .info a:hover,
+  #contact .info a:focus {
+    color: #217dbb;
+    outline: none;
+  }
+  #contact .connect-msg {
+    margin-top: 1.6rem;
+    font-weight: 600;
+    color: #217dbb;
+    font-size: 1.1rem;
+  }
 
-  /* Modal Overlay for full photo zoom */
-  #photoModal {
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1.4rem 0 2rem;
+    font-size: 0.92rem;
+    color: #878e99;
+    user-select: none;
+  }
+
+  /* Modal styles for full screen zoom */
+  #modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(10, 20, 38, 0.97);
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.85);
     display: none;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    z-index: 3000;
-    padding: 25px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    justify-content: center;
+    z-index: 30000;
   }
-  #photoModal.active {
+  #modal.open {
     display: flex;
-    opacity: 1;
   }
-
-  #photoModal img {
+  #modal img {
     max-width: 90vw;
-    max-height: 70vh;
-    border-radius: 15px;
-    box-shadow: 0 15px 30px #0a74daaa;
-    margin-bottom: 0.9rem;
-    object-fit: contain;
-    user-select:none;
+    max-height: 90vh;
+    border-radius: 14px;
+    box-shadow: 0 0 42px rgba(255,255,255,0.8);
+    user-select: none;
+    animation: zoomIn 0.4s ease forwards;
   }
-
-  #photoModal .details {
-    color: #93adffcc;
-    font-size: 1.3rem;
-    max-width: 90vw;
-    text-align: center;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-shadow: 0 0 12px #0a74daaa;
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
-
-  #photoModal .close-button {
+  #modal .close-btn {
     position: absolute;
-    top: 15px;
+    top: 30px;
     right: 30px;
-    font-size: 3rem;
-    color: #70aaffdd;
+    font-size: 2.5rem;
+    color: #fff;
+    background: transparent;
+    border: none;
     cursor: pointer;
     user-select: none;
-    font-weight: 900;
-    transition: color 0.2s ease;
+    padding: 0;
+    transition: color 0.3s ease;
   }
-  #photoModal .close-button:hover {
-    color: #ff517e;
+  #modal .close-btn:hover,
+  #modal .close-btn:focus {
+    color: #3498db;
+    outline: none;
   }
 
-  /* Back to top button */
-  #backToTopBtn {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: #0a74dadd;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    box-shadow: 0 0 15px #0a74dabb;
-    font-size: 24px;
-    display: none;
-    align-items: center;
+  /* Video section styling */
+  #video-section {
+    min-height: 320px;
+    max-width: 1024px;
+    margin: 40px auto 40px auto;
+    padding: 0 24px;
+    display: flex;
     justify-content: center;
-    z-index: 3500;
-    transition: background 0.3s ease;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.15);
   }
-  #backToTopBtn:hover {
-    background: #084a7a;
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 720px){
-    .photo-container {
-      width: 95%;
-      height: 280px;
-    }
-    .photo {
-      width: 140px;
-      height: 220px;
-    }
-    form {
-      gap: 12px;
-    }
+  #video-section video {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(52,152,219,0.3);
   }
 
+  /* Responsive and mobile */
+  @media (max-width: 768px) {
+    section {
+      padding: 120px 20px 70px 20px;
+      max-width: 90vw;
+    }
+    #home h1 {
+      font-size: 2.8rem;
+    }
+    #services .service-cards {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+    }
+    #portfolio .portfolio-grid {
+      grid-template-columns: repeat(2,1fr);
+    }
+    nav {
+      padding: 0.95rem 1rem;
+    }
+    nav ul {
+      width: 70vw;
+    }
+    #video-section {
+      max-height: 200px;
+      margin: 30px auto 30px auto;
+    }
+  }
+  @media (max-width: 400px) {
+    #contact .info {
+      flex-direction: column;
+      gap: 6px;
+      font-size: 1.1rem;
+    }
+    #contact .info span {
+      min-width: auto;
+      text-align: center;
+    }
+  }
 </style>
 </head>
 <body>
-  <div id="pageLoader"><div class="spinner"></div></div>
 
 <header>
-  Contact &amp; Portfolio Interactive Site
+  <nav>
+    <div class="logo" aria-label="Logo">MyPortfolio</div>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul id="primary-menu" role="menu">
+      <li><a href="#home" class="active" role="menuitem" tabindex="0">Home</a></li>
+      <li><a href="#about" role="menuitem" tabindex="0">About</a></li>
+      <li><a href="#services" role="menuitem" tabindex="0">Services</a></li>
+      <li><a href="#portfolio" role="menuitem" tabindex="0">Portfolio</a></li>
+      <li><a href="#testimonials" role="menuitem" tabindex="0">Testimonials</a></li>
+      <li><a href="#contact" role="menuitem" tabindex="0">Contact</a></li>
+    </ul>
+  </nav>
 </header>
 
-<!-- Sections 1 to 6 with photos and data-details attribute -->
-<div class="section" id="section1">
-  <h2>Nature Wonders</h2>
-  <div class="photo-container" data-move-dir="top-left">
-    <img src="https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Forest during sunrise with mist" class="photo" style="left:10%; top:0;" data-details="A serene forest bathed in early morning mist and sunlight." />
-    <img src="https://images.pexels.com/photos/34950/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Waterfall flowing between rocks" class="photo" style="left:35%; top:10%;" data-details="A majestic waterfall flowing between lush green rocks." />
-    <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Green hills under cloudy sky" class="photo" style="left:60%; top:5%;" data-details="Rolling green hills stretching beneath a dynamic cloudy sky." />
-  </div>
-</div>
+<section id="home" tabindex="0" aria-label="Welcome Section">
+  <h1>Welcome to My Professional Portfolio</h1>
+  <p>Your trusted partner for creative, modern solutions.</p>
+  <a href="#contact" class="btn-primary" aria-label="Contact Me">Contact Me</a>
+</section>
 
-<div class="section" id="section2">
-  <h2>City Life</h2>
-  <div class="photo-container" data-move-dir="top-right">
-    <img src="https://images.pexels.com/photos/374870/pexels-photo-374870.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Cityscape during sunset" class="photo" style="left:15%; top:5%;" data-details="Vibrant city skyline glowing under sunset hues." />
-    <img src="https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Busy city streets with lights" class="photo" style="left:45%; top:0;" data-details="Busy urban streets illuminated with colorful lights at night." />
-    <img src="https://images.pexels.com/photos/314710/pexels-photo-314710.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Modern glass buildings" class="photo" style="left:70%; top:12%;" data-details="Reflection of clouds on sleek modern glass buildings." />
-  </div>
-</div>
+<section id="video-section" aria-label="Looping video section">
+  <video src="https://player.vimeo.com/external/438284820.sd.mp4?s=0ff084f66555eeddde52ed13f0426732a7feb9a1&profile_id=165&oauth2_token_id=57447761" autoplay muted loop playsinline aria-hidden="true"></video>
+</section>
 
-<div class="section" id="section3">
-  <h2>Abstract Art</h2>
-  <div class="photo-container" data-move-dir="bottom-left">
-    <img src="https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Colorful abstract painting" class="photo" style="left:12%; top:10%;" data-details="A dazzling abstract painting of vivid colors and shapes." />
-    <img src="https://images.pexels.com/photos/271937/pexels-photo-271937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Textured colorful art" class="photo" style="left:42%; top:0;" data-details="Close-up of textured colorful abstract art." />
-    <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Bright modern art piece" class="photo" style="left:68%; top:15%;" data-details="Bright modern art piece with flowing lines and shapes." />
-  </div>
-</div>
+<section id="about" tabindex="0" aria-label="About Section">
+  <h2>About Me</h2>
+  <p>I am a passionate developer and designer dedicated to creating beautiful and functional websites that deliver results. With years of experience, I blend creativity and technology seamlessly.</p>
+</section>
 
-<div class="section" id="section4">
-  <h2>Mountain Views</h2>
-  <div class="photo-container" data-move-dir="bottom-right">
-    <img src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Snow capped mountain" class="photo" style="left:10%; top:5%;" data-details="Snow capped mountain towering majestically under blue sky." />
-    <img src="https://images.pexels.com/photos/358482/pexels-photo-358482.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Mountain trail and fog" class="photo" style="left:40%; top:12%;" data-details="A misty mountain trail surrounded by fog." />
-    <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Sunrise over mountains" class="photo" style="left:72%; top:7%;" data-details="Colorful sunrise lighting up mountain peaks." />
+<section id="services" tabindex="0" aria-label="Services Section">
+  <h2>Services</h2>
+  <div class="service-cards">
+    <div class="service-card" tabindex="0" role="article" aria-label="Web Development Service">
+      <h3>Web Development</h3>
+      <p>Building responsive and modern websites using the latest technologies that fit your business needs.</p>
+    </div>
+    <div class="service-card" tabindex="0" role="article" aria-label="UI/UX Design Service">
+      <h3>UI/UX Design</h3>
+      <p>Creating intuitive interfaces and smooth user experiences that engage and convert visitors.</p>
+    </div>
+    <div class="service-card" tabindex="0" role="article" aria-label="SEO Optimization Service">
+      <h3>SEO Optimization</h3>
+      <p>Enhancing your site's visibility on search engines to attract more organic traffic and leads.</p>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="section" id="section5">
-  <h2>Ocean Life</h2>
-  <div class="photo-container" data-move-dir="left">
-    <img src="https://thafd.bing.com/th/id/OIP.II893F4LKvC5oqFQeBb_rwHaEK?rs=1&pid=ImgDetMain" alt="Beach waves" class="photo" style="left:15%; top:5%;" data-details="Gentle waves lapping a sandy beach at sunset." />
-    <img src="https://images.pexels.com/photos/1669944/pexels-photo-1669944.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Underwater coral reef" class="photo" style="left:45%; top:12%;" data-details="Vibrant coral reef teeming with marine life." />
-    <img src="https://thafd.bing.com/th/id/OIP.YZ-gd_yBanpYe9eqV1SLZgHaEK?rs=1&pid=ImgDetMain" alt="Ocean horizon" class="photo" style="left:70%; top:0%;" data-details="Peaceful ocean horizon under a cloudy sky." />
+<section id="portfolio" tabindex="0" aria-label="Portfolio Section">
+  <h2>Portfolio</h2>
+  <div class="portfolio-grid" aria-label="Portfolio gallery">
+    <div class="portfolio-item" tabindex="0" role="img" aria-label="Project 1">
+      <img src="https://images.pexels.com/photos/1181358/pexels-photo-1181358.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Project 1 screenshot" loading="lazy" />
+    </div>
+    <div class="portfolio-item" tabindex="0" role="img" aria-label="Project 2">
+      <img src="https://images.pexels.com/photos/1181279/pexels-photo-1181279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Project 2 screenshot" loading="lazy" />
+    </div>
+    <div class="portfolio-item" tabindex="0" role="img" aria-label="Project 3">
+      <img src="https://images.pexels.com/photos/1181348/pexels-photo-1181348.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Project 3 screenshot" loading="lazy" />
+    </div>
+    <div class="portfolio-item" tabindex="0" role="img" aria-label="Project 4">
+      <img src="https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Project 4 screenshot" loading="lazy" />
+    </div>
   </div>
-</div>
+</section>
 
-<div class="section" id="section6">
-  <h2>Forest Trails</h2>
-  <div class="photo-container" data-move-dir="right">
-    <img src="https://thafd.bing.com/th/id/OIP.j0VgevSfHONAj-xuajVaAQHaEK?rs=1&pid=ImgDetMain" alt="Pathway through forest" class="photo" style="left:13%; top:10%;" data-details="Sunlit pathway winding through dense forest trees." />
-    <img src="https://c4.wallpaperflare.com/wallpaper/264/27/750/track-nature-forest-vegetation-wallpaper-preview.jpg" alt="Train tracks in forest" class="photo" style="left:44%; top:0;" data-details="Old train tracks leading through the forest." />
-    <img src="https://images.pexels.com/photos/355423/pexels-photo-355423.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=320" alt="Forest canopy" class="photo" style="left:70%; top:12%;" data-details="Sun filtering through tall forest canopy." />
+<section id="testimonials" tabindex="0" aria-label="Testimonials Section">
+  <h2>Testimonials</h2>
+  <div class="testimonial" tabindex="0" role="region" aria-label="Testimonial from Rajesh Kumar">
+    <p>“A truly professional developer – delivered exactly what I needed ahead of schedule. Highly recommended!”</p>
+    <div class="author">- Rajesh Kumar</div>
   </div>
-</div>
+  <div class="testimonial" tabindex="0" role="region" aria-label="Testimonial from Priya Singh">
+    <p>“Creative, reliable, and easy to work with. My website traffic has significantly increased thanks to the SEO optimization provided.”</p>
+    <div class="author">- Priya Singh</div>
+  </div>
+  <div class="testimonial" tabindex="0" role="region" aria-label="Testimonial from Anil Gupta">
+    <p>“Outstanding design skills and attention to detail. My brand now shines online like never before.”</p>
+    <div class="author">- Anil Gupta</div>
+  </div>
+</section>
 
-<!-- Contact form section -->
-<div class="section" id="contact-form-section">
+<section id="contact" aria-label="Contact Information" tabindex="0">
   <h2>Contact Me</h2>
-  <form id="contactForm" novalidate>
-    <label for="name">Full Name</label>
-    <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
-    
-    <label for="phone">Contact Number</label>
-    <input type="tel" id="phone" name="phone" placeholder="Your phone number" required pattern="+?[0-9\s()-]{7,20}"
-    autocomplete="tel" />
-    
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="email" placeholder="Your email" required autocomplete="email" />
-    
-    <button type="submit">Submit</button>
-  </form>
-  <p id="formMessage" aria-live="polite" style="text-align:center; margin-top:1rem; color: #0f0;"></p>
-</div>
+  <p class="info"><span aria-hidden="true">👤</span><span>Name:</span> Your Name</p>
+  <p class="info"><span aria-hidden="true">📞</span><span>Phone:</span> +91-1234567890</p>
+  <p class="info"><span aria-hidden="true">📧</span><span>Email:</span> <a href="mailto:youremail@example.com" aria-label="Send Email to youremail@example.com">youremail@example.com</a></p>
+  <p class="connect-msg">I look forward to connecting with you!</p>
+</section>
 
-<!-- Contact info footer -->
 <footer>
-  <p><strong>Contact Info:</strong></p>
-  <p>Name: AAYUSHI KEER</p>
-  <p>Phone: +91 8824398515</p>
-  <p>Email: <a href="mailto:aayushikeer65@gmail.com">aayushikeer65@gmail.com</a></p>
+  &copy; 2024 Your Name. All rights reserved.
 </footer>
 
-<!-- Modal Overlay for photo zoom with details -->
-<div id="photoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" tabindex="-1">
-  <span class="close-button" title="Close modal" aria-label="Close Modal">&times;</span>
-  <img src="" alt="" id="modalTitle" />
-  <div class="details" id="modalDesc"></div>
+<!-- Modal for full screen photo zoom -->
+<div id="modal" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="close-btn" aria-label="Close image viewer">&times;</button>
+  <img src="" alt="Expanded project screenshot" />
 </div>
 
-<!-- Back to top button -->
-<button id="backToTopBtn" aria-label="Back to top">&#8679;</button> 
+<!-- Particle background -->
+<canvas id="particle-bg" aria-hidden="true"></canvas>
+
 <script>
-  // Page loader fade out on load
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('pageLoader');
-    loader.style.opacity = '0';
-    setTimeout(() => loader.style.display = 'none', 500);
-  });
-  // Photo movement effects
-  const sections = document.querySelectorAll('.section');
-  sections.forEach(section => {
-    const container = section.querySelector('.photo-container');
-    if(!container) return;
+  (() => {
+    // Navigation menu toggle for mobile
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('nav ul');
 
-    const moveDir = container.dataset.moveDir || 'top-left';
+    menuToggle.addEventListener('click', () => {
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+      menuToggle.setAttribute('aria-expanded', !expanded);
+      menuToggle.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
 
-    section.addEventListener('mousemove', e => {
-      const rect = container.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left - rect.width / 2;
-      const offsetY = e.clientY - rect.top - rect.height / 2;
-
-      const photos = container.querySelectorAll('.photo');
-      photos.forEach((photo, i) => {
-        let moveX = 0, moveY = 0;
-        const intensity = (i + 1) * 5;
-
-        switch(moveDir) {
-          case 'top-left':
-            moveX = -offsetX * intensity / 100;
-            moveY = -offsetY * intensity / 100;
-            break;
-          case 'top-right':
-            moveX = offsetX * intensity / 100;
-            moveY = -offsetY * intensity / 100;
-            break;
-          case 'bottom-left':
-            moveX = -offsetX * intensity / 100;
-            moveY = offsetY * intensity / 100;
-            break;
-          case 'bottom-right':
-            moveX = offsetX * intensity / 100;
-            moveY = offsetY * intensity / 100;
-            break;
-          case 'left':
-            moveX = -offsetX * intensity / 80;
-            moveY = 0;
-            break;
-          case 'right':
-            moveX = offsetX * intensity / 80;
-            moveY = 0;
-            break;
+    // Close menu on link click (mobile)
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navMenu.classList.contains('open')) {
+          menuToggle.click();
         }
-
-        photo.style.transform = `translate(${moveX}px, ${moveY}px) scale(1)`;
       });
     });
 
-    section.addEventListener('mouseleave', () => {
-      const photos = container.querySelectorAll('.photo');
-      photos.forEach(photo => {
-        photo.style.transform = `translate(0,0) scale(1)`;
+    // Navigation active link update on scroll
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
+
+    function updateActiveNav() {
+      const scrollPos = window.scrollY + window.innerHeight / 3;
+      let currentIndex = 0;
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].offsetTop <= scrollPos) {
+          currentIndex = i;
+        }
+      }
+      navLinks.forEach((link, idx) => {
+        link.classList.toggle('active', idx === currentIndex);
       });
-    });
-  });
-
-  // Fullscreen photo zoom with details modal
-  const photoModal = document.getElementById('photoModal');
-  const modalImg = photoModal.querySelector('img');
-  const modalDetails = photoModal.querySelector('.details');
-  const closeBtn = photoModal.querySelector('.close-button');
-
-  const allPhotos = document.querySelectorAll('.photo');
-  allPhotos.forEach(photo => {
-    photo.addEventListener('click', e => {
-      e.stopPropagation();
-      modalImg.src = photo.src.replace(/&h=320/, '&h=1080'); // load bigger image if possible
-      modalImg.alt = photo.alt || '';
-      modalDetails.textContent = photo.dataset.details || photo.alt || '';
-      photoModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      photoModal.focus();
-    });
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-  photoModal.addEventListener('click', e => {
-    if(e.target === photoModal) closeModal();
-  });
-
-  // Close modal with escape key
-  document.addEventListener('keydown', e => {
-    if (e.key === "Escape" && photoModal.classList.contains('active')) {
-      closeModal();
-    }
-  });
-
-  function closeModal() {
-    photoModal.classList.remove('active');
-    modalImg.src = '';
-    modalDetails.textContent = '';
-    document.body.style.overflow = '';
-  }
-
-  // Contact form submission
-  const contactForm = document.getElementById('contactForm');
-  const formMessage = document.getElementById('formMessage');
-  let formTimeout;
-
-  contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    if (!contactForm.checkValidity()) {
-      formMessage.style.color = "red";
-      formMessage.textContent = "Please fill out all fields correctly.";
-      clearTimeout(formTimeout);
-      formTimeout = setTimeout(() => formMessage.textContent = '', 4000);
-      return;
     }
 
-    const formData = {
-      from_name: contactForm.name.value,
-      phone: contactForm.phone.value,
-      email_id: contactForm.email.value,
+    window.addEventListener('scroll', updateActiveNav);
+    updateActiveNav();
+
+    // Animate fade in of sections on scroll using Intersection Observer
+    const animTargets = document.querySelectorAll('section h2, section p, #home h1, #home p, .btn-primary');
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
     };
 
-    emailjs.sendform('service_f3ibswk', 'template_pu0ecfe', formData) 
-      .then(function(response){
-        formMessage.style.color = "#0f0";
-        formMessage.textContent = "Thank you! Your details have been sent successfully.";
-        contactForm.reset();
-        clearTimeout(formTimeout);
-        formTimeout = setTimeout(() => formMessage.textContent = '', 5000);
-      }, (error) => {
-        formMessage.style.color = "red";
-        formMessage.textContent = "Oops! Something went wrong. Please try again.";
-        clearTimeout(formTimeout);
-        formTimeout = setTimeout(() => formMessage.textContent = '', 5000);
-        console.error('EmailJS error:', error);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
       });
-  });
+    }, observerOptions);
 
-  // Back to top button logic
-  const backToTopBtn = document.getElementById('backToTopBtn');
-  window.addEventListener('scroll', () => {
-    if(document.documentElement.scrollTop > 200){
-      backToTopBtn.style.display = 'flex';
-    } else {
-      backToTopBtn.style.display = 'none';
+    animTargets.forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+
+    // Particle background animation
+    const canvas = document.getElementById('particle-bg');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let particles = [];
+
+    function initCanvas() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
     }
-  });
 
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
+    class Particle {
+      constructor() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.radius = 1 + Math.random() * 1.5;
+        this.speedX = (Math.random() - 0.5) * 0.15;
+        this.speedY = (Math.random() - 0.5) * 0.15;
+        this.opacity = 0.15 + Math.random() * 0.2;
+      }
+      move() {
+        this.x += this.speedX;
+        this.y += this.speedY;
 
+        if (this.x < 0 || this.x > W) this.speedX *= -1;
+        if (this.y < 0 || this.y > H) this.speedY *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(52, 152, 219, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    function createParticles(count) {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.move();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    function initParticles() {
+      initCanvas();
+      createParticles(100);
+      animateParticles();
+    }
+
+    window.addEventListener('resize', () => {
+      initCanvas();
+    });
+
+    initParticles();
+
+    // Lightbox modal for portfolio images
+    const modal = document.getElementById('modal');
+    const modalImg = modal.querySelector('img');
+    const closeBtn = modal.querySelector('.close-btn');
+
+    function openModal(src, alt) {
+      modalImg.src = src;
+      modalImg.alt = alt;
+      modal.classList.add('open');
+      // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
+      // Focus modal for accessibility
+      closeBtn.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modalImg.src = '';
+      modalImg.alt = '';
+      // Re-enable background scrolling
+      document.body.style.overflow = '';
+    }
+
+    // Click portfolio image to open modal
+    document.querySelectorAll('.portfolio-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        openModal(img.src, img.alt || 'Expanded image');
+      });
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(img.src, img.alt || 'Expanded image');
+        }
+      });
+    });
+
+    // Close modal on close button click
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close modal on clicking outside image
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Close modal on ESC key press
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+  })();
 </script>
-<!-- EmailJS SDK include + initialize -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-<script>
-  // SDK load hone ke baad initialize karo
-  document.addEventListener("DOMContentLoaded", function () {
-    emailjs.init("EK-BwMDd6aZyDUFQn"); // <-- Yahan apna EmailJS user ID daalo
-  });
-</script>
+
 </body>
 </html>
+
